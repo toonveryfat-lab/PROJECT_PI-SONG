@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f5f5">
+  <title>ระบบติดตามสภาพแวดล้อม</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Leelawadee UI", Tahoma, sans-serif;
+      color: #242424;
+      background: var(--page);
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      --ink: #252525;
+      --muted: #777;
+      --line: #e6e6e6;
+      --surface: #fff;
+      --page: #f5f5f5;
+      --accent: #303030;
+      --green: #4a7958;
+      --green-bg: #edf5ef;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 0;
+      background: var(--page);
+      font-size: 17px;
+    }
+
+    button, select { font: inherit; }
+    button { color: inherit; }
+
+    .window {
+      width: 100%;
+      min-height: 100vh;
+      overflow: hidden;
+      background: var(--page);
+    }
+
+    .topbar {
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 26px;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand, .top-actions, .brand-mark, .title-row, .inline, .device-heading,
+    .device-title, .metric-label, .chart-header, .section-heading {
+      display: flex;
+      align-items: center;
+    }
+
+    .brand { gap: 10px; font-size: 17px; font-weight: 600; }
+    .brand-mark {
+      width: 25px;
+      height: 25px;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      background: #333;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .top-actions { gap: 14px; color: var(--muted); font-size: 15px; }
+
+    .layout { display: grid; grid-template-columns: 164px minmax(0, 1fr); min-height: calc(100vh - 58px); }
+    .sidebar {
+      padding: 25px 12px;
+      background: #fff;
+      border-right: 1px solid var(--line);
+    }
+    .nav-label {
+      margin: 4px 8px 10px;
+      color: #888;
+      font-size: 14px;
+    }
+    .nav-list { display: grid; gap: 4px; }
+    .nav-button {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      width: 100%;
+      min-height: 36px;
+      padding: 0 10px;
+      border: 0;
+      border-radius: 4px;
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+    }
+    .nav-button:hover, .nav-button.active { background: #f0f0f0; }
+    .nav-button.active { font-weight: 600; }
+    .nav-icon { width: 15px; text-align: center; font-size: 14px; }
+    .sidebar-divider { height: 1px; margin: 20px 4px 14px; background: var(--line); }
+    .sidebar-note { padding: 0 8px; color: #858585; font-size: 14px; line-height: 1.7; }
+
+    main { min-width: 0; padding: 28px 30px 20px; }
+    .title-row { justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+    .eyebrow { margin-bottom: 5px; color: var(--muted); font-size: 15px; }
+    h1 { margin: 0; font-size: 30px; line-height: 1.35; }
+    .subtitle { margin-top: 5px; color: var(--muted); font-size: 15px; }
+    .updated { color: var(--muted); font-size: 14px; text-align: right; line-height: 1.8; }
+    .button {
+      min-height: 28px;
+      padding: 4px 10px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    .button:hover { border-color: #bcbcbc; background: #fafafa; }
+    .button.dark { border-color: var(--accent); color: #fff; background: var(--accent); }
+    .button.dark:hover { background: #444; }
+    .button.small { min-height: 30px; padding: 4px 10px; font-size: 14px; }
+
+    .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .card { border: 1px solid var(--line); border-radius: 5px; background: var(--surface); }
+    .metric-card { min-height: 126px; padding: 16px 18px 13px; }
+    .metric-top { display: flex; justify-content: space-between; gap: 8px; }
+    .metric-label { gap: 7px; font-size: 16px; font-weight: 600; }
+    .sensor-tag { color: #777; font-size: 13px; white-space: nowrap; }
+    .metric-value { margin-top: 7px; font-size: 42px; font-weight: 600; letter-spacing: -1.5px; line-height: 1; }
+    .metric-value small { margin-left: 4px; font-size: 18px; font-weight: 400; letter-spacing: 0; }
+    .metric-foot { display: flex; justify-content: space-between; gap: 8px; margin-top: 10px; color: var(--muted); font-size: 13px; }
+
+    .chart-card { margin-top: 16px; padding: 15px 16px 12px; }
+    .chart-header { justify-content: space-between; gap: 12px; margin-bottom: 11px; }
+    .chart-header h2, .section-heading h2 { margin: 0; font-size: 17px; }
+    .chart-description { margin-top: 4px; color: var(--muted); font-size: 14px; }
+    .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .chart { min-width: 0; padding-top: 10px; }
+    .chart + .chart { border-left: 1px solid var(--line); padding-left: 18px; }
+    .chart-title { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 14px; }
+    .chart-title span:last-child { color: var(--muted); }
+    .chart svg { display: block; width: 100%; height: 133px; overflow: visible; }
+    .chart .gridline { stroke: #e9e9e9; stroke-width: 1; }
+    .chart .series { fill: none; stroke: #333; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .chart .dot { fill: #333; }
+    .chart text { fill: #777; font: 13px Tahoma, sans-serif; }
+    .section-heading { justify-content: space-between; gap: 12px; margin: 20px 0 10px; }
+    .section-heading span { color: var(--muted); font-size: 14px; }
+    .devices { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .device-card { min-height: 144px; padding: 14px 16px 0; }
+    .device-heading { align-items: flex-start; justify-content: space-between; gap: 9px; }
+    .device-title { gap: 8px; font-size: 16px; font-weight: 600; }
+    .status { display: inline-flex; align-items: center; gap: 5px; color: var(--green); font-size: 14px; }
+    .status::before { width: 6px; height: 6px; border-radius: 50%; background: #569367; content: ""; }
+    .device-description { margin-top: 10px; color: var(--muted); font-size: 14px; line-height: 1.75; }
+    .device-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-top: 10px;
+      padding: 9px 0 8px;
+      border: 0;
+      border-top: 1px solid var(--line);
+      background: transparent;
+      cursor: pointer;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .device-link:hover { color: #555; }
+    .footer-note { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); color: #858585; font-size: 13px; }
+
+    .back-link { display: inline-flex; gap: 7px; align-items: center; margin-bottom: 9px; padding: 0; border: 0; background: none; cursor: pointer; font-size: 15px; }
+    .detail-card { margin-top: 16px; padding: 18px; }
+    .device-summary { display: grid; grid-template-columns: 74px minmax(0, 1fr) 1px minmax(150px, .8fr); gap: 16px; align-items: center; }
+    .device-avatar { display: grid; width: 74px; height: 74px; place-items: center; border-radius: 5px; background: #f0f0f0; font-size: 28px; }
+    .device-kind, .summary-label { color: var(--muted); font-size: 14px; }
+    .device-summary h2 { margin: 4px 0; font-size: 26px; }
+    .summary-rule { height: 64px; background: var(--line); }
+    .summary-status { margin-top: 6px; }
+    .detail-meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 17px; padding-top: 13px; border-top: 1px solid var(--line); }
+    .detail-meta strong { display: block; margin-top: 4px; font-size: 14px; font-weight: 600; }
+    .detail-metrics { margin-top: 18px; }
+    .detail-metrics .metric-card { min-height: 84px; padding: 12px 15px; }
+    .detail-metrics .metric-value { margin-top: 4px; font-size: 28px; }
+    .detail-metrics .metric-foot { margin-top: 4px; }
+    .activity-card { margin-top: 16px; overflow: hidden; }
+    .activity-header { display: flex; align-items: center; justify-content: space-between; padding: 13px 15px; }
+    .activity-header h2 { margin: 0; font-size: 17px; }
+    .activity-header span { color: var(--muted); font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th, td { padding: 10px 15px; border-top: 1px solid var(--line); font-size: 14px; }
+    th { color: #666; background: #f5f5f5; font-weight: 600; }
+    td { color: #505050; }
+    .state-cell { color: var(--green); }
+    .hidden { display: none !important; }
+    .toast {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 5;
+      padding: 11px 15px;
+      border-radius: 5px;
+      color: #fff;
+      background: #303030;
+      box-shadow: 0 3px 14px #0003;
+      font-size: 11px;
+    }
+
+    @media (max-width: 720px) {
+      body { padding: 0; background: var(--page); }
+      .window { min-height: 100vh; }
+      .topbar { height: 54px; padding: 0 16px; }
+      .top-actions { gap: 8px; }
+      .top-actions .date-label { display: none; }
+      .layout { display: block; min-height: 0; }
+      .sidebar { position: sticky; top: 0; z-index: 2; padding: 7px 12px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .nav-label, .sidebar-divider, .sidebar-note { display: none; }
+      .nav-list { display: flex; gap: 5px; overflow-x: auto; }
+      .nav-button { width: auto; min-width: max-content; min-height: 34px; padding: 0 10px; }
+      main { padding: 21px 16px 24px; }
+      .title-row { align-items: flex-start; }
+      h1 { font-size: 24px; }
+      .title-row > .updated { max-width: 120px; }
+      .metric-card { min-height: 112px; padding: 13px; }
+      .metric-value { font-size: 36px; }
+      .metric-foot { flex-direction: column; gap: 3px; }
+      .chart-card { padding: 13px 12px; }
+      .chart-grid { gap: 11px; }
+      .chart + .chart { padding-left: 10px; }
+      .chart svg { height: 108px; }
+      .devices { gap: 10px; }
+      .device-card { padding: 12px 12px 0; }
+      .device-heading { flex-wrap: wrap; }
+      .detail-card { padding: 14px; }
+      .device-summary { grid-template-columns: 58px minmax(0, 1fr); gap: 12px; }
+      .device-avatar { width: 58px; height: 58px; }
+      .summary-rule { display: none; }
+      .device-summary > div:last-child { grid-column: 2; }
+      .detail-meta { gap: 7px; }
+      th, td { padding: 9px 8px; }
+    }
+
+    @media (max-width: 480px) {
+      .metrics, .devices { grid-template-columns: 1fr; }
+      .metrics { gap: 9px; }
+      .metric-card { min-height: 98px; }
+      .metric-foot { flex-direction: row; }
+      .chart-grid { grid-template-columns: 1fr; }
+      .chart + .chart { border-left: 0; border-top: 1px solid var(--line); padding: 12px 0 0; }
+      .chart svg { height: 120px; }
+      .devices { gap: 9px; }
+      .device-card { min-height: 130px; }
+      .updated { font-size: 13px; }
+      .detail-meta { grid-template-columns: 1fr 1fr; }
+      .activity-card { overflow-x: auto; }
+      table { min-width: 500px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="window">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">◩</span><span>ระบบติดตามสภาพแวดล้อม</span></div>
+      <div class="top-actions">
+        <span class="date-label">โรงเรียน D1&nbsp; · &nbsp;โซน A</span>
+        <button class="button small" id="account-button" type="button">ผู้ดูแลระบบ</button>
+      </div>
+    </header>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="nav-label">การแสดงข้อมูลอุปกรณ์</div>
+        <nav class="nav-list" aria-label="เมนูหลัก">
+          <button class="nav-button active" data-page="dashboard"><span class="nav-icon">▦</span>แดชบอร์ด</button>
+          <button class="nav-button" data-page="fan"><span class="nav-icon">♧</span>สถานะพัดลม</button>
+          <button class="nav-button" data-page="sprinkler"><span class="nav-icon">◉</span>สถานะสปริงเกอร์</button>
+        </nav>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-note">สำหรับผู้ดูแลระบบและผู้ที่เกี่ยวข้องเท่านั้น</div>
+      </aside>
+
+      <main>
+        <section id="dashboard-page">
+          <div class="title-row">
+            <div>
+              <h1>แดชบอร์ดหลัก</h1>
+              <div class="subtitle">ภาพรวมอุณหภูมิ ความชื้น และสถานะอุปกรณ์ · โรงเรียน D1</div>
+            </div>
+            <div class="updated">
+              <button class="button small" id="refresh-button" type="button">↻ &nbsp;อัปเดตข้อมูลล่าสุด</button>
+              <div id="updated-time">ข้อมูลตัวอย่าง · รอเชื่อมต่อ ThingsBoard</div>
+            </div>
+          </div>
+
+          <div class="metrics">
+            <article class="card metric-card">
+              <div class="metric-top">
+                <div class="metric-label"><span>♨</span> อุณหภูมิ</div>
+                <span class="sensor-tag">เซนเซอร์ TH-01</span>
+              </div>
+              <div class="metric-value"><span data-reading="temperature">30.8</span><small>°C</small></div>
+              <div class="metric-foot"><span>ค่าเฉลี่ย 6 ชม. 1 วันที่ผ่านมา</span><span>ข้อมูลทุก 5 นาที (ล่าสุด)</span></div>
+            </article>
+            <article class="card metric-card">
+              <div class="metric-top">
+                <div class="metric-label"><span>◉</span> ความชื้นสัมพัทธ์</div>
+                <span class="sensor-tag">เซนเซอร์ TH-01</span>
+              </div>
+              <div class="metric-value"><span data-reading="humidity">68</span><small>%RH</small></div>
+              <div class="metric-foot"><span>ค่าเฉลี่ย 6 ชม. 1 วันที่ผ่านมา</span><span>ข้อมูลทุก 5 นาที (ล่าสุด)</span></div>
+            </article>
+          </div>
+
+          <section class="card chart-card" aria-label="แนวโน้มข้อมูลเซนเซอร์">
+            <div class="chart-header">
+              <div>
+                <h2>แนวโน้มเซนเซอร์</h2>
+                <div class="chart-description">ย้อนหลัง 6 ชั่วโมง · 13:32–14:32 น. · อัปเดตทุก 5 นาที</div>
+              </div>
+              <select class="button small" id="range-select" aria-label="ช่วงเวลา">
+                <option value="6">1 ชั่วโมงล่าสุด</option>
+                <option value="12">6 ชั่วโมงล่าสุด</option>
+                <option value="24">24 ชั่วโมงล่าสุด</option>
+              </select>
+            </div>
+            <div class="chart-grid">
+              <div class="chart">
+                <div class="chart-title"><strong>อุณหภูมิ (°C)</strong><span>ล่าสุด <span data-chart-latest="temperature">30.8</span>°C · สูงสุด <span data-chart-max="temperature">31.2</span>°</span></div>
+                <svg viewBox="0 0 440 150" role="img" aria-label="กราฟอุณหภูมิ">
+                  <line class="gridline" x1="38" y1="24" x2="432" y2="24"/><line class="gridline" x1="38" y1="55" x2="432" y2="55"/><line class="gridline" x1="38" y1="86" x2="432" y2="86"/><line class="gridline" x1="38" y1="117" x2="432" y2="117"/>
+                  <text x="5" y="27">32</text><text x="5" y="58">31</text><text x="5" y="89">30</text><text x="5" y="120">29</text>
+                  <polyline class="series" data-chart="temperature" points="38,84 65,91 92,103 119,88 146,76 173,82 200,65 227,58 254,68 281,51 308,63 335,49 362,57 389,66 416,61"/>
+                  <circle class="dot" data-chart-dot="temperature" cx="416" cy="61" r="3"/>
+                  <text x="38" y="143">13:32</text><text x="126" y="143">13:47</text><text x="215" y="143">14:02</text><text x="305" y="143">14:17</text><text x="390" y="143">14:32</text>
+                </svg>
+              </div>
+              <div class="chart">
+                <div class="chart-title"><strong>ความชื้น (%RH)</strong><span>ล่าสุด <span data-chart-latest="humidity">68</span> · สูงสุด <span data-chart-max="humidity">72</span></span></div>
+                <svg viewBox="0 0 440 150" role="img" aria-label="กราฟความชื้น">
+                  <line class="gridline" x1="38" y1="24" x2="432" y2="24"/><line class="gridline" x1="38" y1="55" x2="432" y2="55"/><line class="gridline" x1="38" y1="86" x2="432" y2="86"/><line class="gridline" x1="38" y1="117" x2="432" y2="117"/>
+                  <text x="5" y="27">75</text><text x="5" y="58">70</text><text x="5" y="89">65</text><text x="5" y="120">60</text>
+                  <polyline class="series" data-chart="humidity" points="38,55 65,47 92,41 119,49 146,58 173,53 200,64 227,72 254,78 281,71 308,84 335,75 362,68 389,61 416,61"/>
+                  <circle class="dot" data-chart-dot="humidity" cx="416" cy="61" r="3"/>
+                  <text x="38" y="143">13:32</text><text x="126" y="143">13:47</text><text x="215" y="143">14:02</text><text x="305" y="143">14:17</text><text x="390" y="143">14:32</text>
+                </svg>
+              </div>
+            </div>
+          </section>
+
+          <div class="section-heading"><h2>สถานะอุปกรณ์</h2><span>2 อุปกรณ์ · สถานะปกติ</span></div>
+          <div class="devices">
+            <article class="card device-card">
+              <div class="device-heading">
+                <div class="device-title"><span>♧</span> พัดลม <span class="sensor-tag">FAN-01</span></div>
+                <span class="status">กำลังทำงาน</span>
+              </div>
+              <div class="device-description">เริ่มทำงานอัตโนมัติ · รับข้อมูลล่าสุด 14:32:05 น.<br>ตั้งค่าความเร็ว: ระดับ 4 จาก 5 ระดับ</div>
+              <button class="device-link" data-page="fan">ดูสถานะพัดลม <span>→</span></button>
+            </article>
+            <article class="card device-card">
+              <div class="device-heading">
+                <div class="device-title"><span>◉</span> สปริงเกอร์ <span class="sensor-tag">SPR-01</span></div>
+                <span class="status">หยุดทำงาน</span>
+              </div>
+              <div class="device-description">เปิดอัตโนมัติ (ตั้งเวลา) · รับข้อมูลล่าสุด 14:32:05 น.<br>รอบการทำงาน: ทุก 2 ชั่วโมง · ทำงาน 20 นาที</div>
+              <button class="device-link" data-page="sprinkler">ดูสถานะสปริงเกอร์ <span>→</span></button>
+            </article>
+          </div>
+          <div class="footer-note">ⓘ &nbsp;ขณะนี้แสดงข้อมูลตัวอย่าง · เมื่อเชื่อมต่อ ThingsBoard ควรดึงข้อมูลผ่าน API ฝั่งเซิร์ฟเวอร์เพื่อปกป้อง Access Token</div>
+        </section>
+
+        <section id="detail-page" class="hidden">
+          <button class="back-link" type="button" data-page="dashboard">← &nbsp;กลับไปแดชบอร์ด</button>
+          <div class="title-row">
+            <div>
+              <h1 id="detail-title">สถานะพัดลม</h1>
+              <div class="subtitle" id="detail-subtitle">รายละเอียดอุปกรณ์และข้อมูลการทำงาน · FAN-01 · โรงเรียน D1 / โซน A</div>
+            </div>
+            <div class="updated">
+              <button class="button small" type="button" id="detail-refresh">↻ &nbsp;อัปเดตข้อมูลล่าสุด</button>
+              <div>ข้อมูลตัวอย่าง · รอเชื่อมต่อ ThingsBoard</div>
+            </div>
+          </div>
+
+          <article class="card detail-card">
+            <div class="device-summary">
+              <div class="device-avatar" id="device-avatar" aria-hidden="true">♧</div>
+              <div>
+                <div class="device-kind" id="device-kind">พัดลมระบายอากาศ · FAN-01</div>
+                <h2 id="device-state">กำลังทำงาน</h2>
+                <div class="subtitle" id="device-since">ทำงานต่อเนื่อง 14 นาที 5 วินาที</div>
+              </div>
+              <div class="summary-rule"></div>
+              <div>
+                <div class="summary-label">สถานะการเชื่อมต่อ</div>
+                <div class="summary-status"><span class="status">เชื่อมต่อแล้ว (สัญญาณดี)</span></div>
+                <div class="subtitle">รับข้อมูลล่าสุด 14:32:05 น. · ทุก 5 นาที</div>
+              </div>
+            </div>
+            <div class="detail-meta">
+              <div><span class="summary-label">ตำแหน่งติดตั้ง</span><strong>โรงเรียน D1 / โซน A</strong></div>
+              <div><span class="summary-label">การทำงานล่าสุด</span><strong id="last-action">14:18:00 น. · เริ่มทำงาน</strong></div>
+              <div><span class="summary-label">ข้อมูลวันนี้</span><strong id="today-summary">จากทั้งหมด 2 ชม. 34 นาที</strong></div>
+            </div>
+          </article>
+
+          <div class="section-heading"><h2>สภาพแวดล้อมขณะนี้</h2><span>ข้อมูลจากเซนเซอร์ TH-01 ในบริเวณเดียวกัน</span></div>
+          <div class="metrics detail-metrics">
+            <article class="card metric-card">
+              <div class="metric-top"><div class="metric-label">♨ &nbsp;อุณหภูมิ</div><span class="sensor-tag">เซนเซอร์ TH-01</span></div>
+              <div class="metric-foot"><span class="metric-value"><span data-reading="temperature">30.8</span><small>°C</small></span><span data-reading-time>ข้อมูลตัวอย่าง</span></div>
+            </article>
+            <article class="card metric-card">
+              <div class="metric-top"><div class="metric-label">◉ &nbsp;ความชื้นสัมพัทธ์</div><span class="sensor-tag">เซนเซอร์ TH-01</span></div>
+              <div class="metric-foot"><span class="metric-value"><span data-reading="humidity">68</span><small>%RH</small></span><span data-reading-time>ข้อมูลตัวอย่าง</span></div>
+            </article>
+          </div>
+
+          <section class="card activity-card">
+            <div class="activity-header"><h2>กิจกรรมล่าสุด</h2><span>11 ต.ค. 2569 · 4 รายการล่าสุด</span></div>
+            <table>
+              <thead><tr><th>เวลา</th><th>เหตุการณ์</th><th>สถานะอุปกรณ์</th><th>การเชื่อมต่อ (ล่าสุด)</th></tr></thead>
+              <tbody id="activity-rows"></tbody>
+            </table>
+          </section>
+          <div class="footer-note">ⓘ &nbsp;ขณะนี้แสดงข้อมูลตัวอย่าง · เมื่อเชื่อมต่อ ThingsBoard ควรดึงข้อมูลผ่าน API ฝั่งเซิร์ฟเวอร์เพื่อปกป้อง Access Token</div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <div class="toast hidden" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const demoTelemetry = {
+      temperatureC: 30.8,
+      humidityPct: 68,
+      recordedAt: "2026-10-11T14:32:05+07:00",
+      history: [
+        { temperatureC: 30.1, humidityPct: 70 },
+        { temperatureC: 29.9, humidityPct: 71 },
+        { temperatureC: 29.6, humidityPct: 72 },
+        { temperatureC: 30.0, humidityPct: 71 },
+        { temperatureC: 30.3, humidityPct: 69 },
+        { temperatureC: 30.1, humidityPct: 70 },
+        { temperatureC: 30.6, humidityPct: 68 },
+        { temperatureC: 30.8, humidityPct: 67 },
+        { temperatureC: 30.5, humidityPct: 66 },
+        { temperatureC: 31.0, humidityPct: 67 },
+        { temperatureC: 30.6, humidityPct: 65 },
+        { temperatureC: 31.1, humidityPct: 66 },
+        { temperatureC: 30.8, humidityPct: 67 },
+        { temperatureC: 30.5, humidityPct: 68 },
+        { temperatureC: 30.8, humidityPct: 68 }
+      ]
+    };
+
+    // Replace this sample provider with the application's server API when ThingsBoard is connected.
+    async function readTelemetry() {
+      return demoTelemetry;
+    }
+
+    function renderChartMetric(name, values, min, max) {
+      const points = values.map((value, index) => {
+        const x = 38 + (378 * index) / Math.max(values.length - 1, 1);
+        const y = 117 - ((value - min) / (max - min)) * 93;
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+      });
+      document.querySelector(`[data-chart="${name}"]`).setAttribute("points", points.join(" "));
+
+      const lastIndex = Math.max(values.length - 1, 0);
+      const lastX = 38 + (378 * lastIndex) / Math.max(values.length - 1, 1);
+      const lastY = 117 - ((values[lastIndex] - min) / (max - min)) * 93;
+      const dot = document.querySelector(`[data-chart-dot="${name}"]`);
+      dot.setAttribute("cx", lastX.toFixed(1));
+      dot.setAttribute("cy", lastY.toFixed(1));
+      document.querySelector(`[data-chart-latest="${name}"]`).textContent = values[lastIndex].toFixed(name === "temperature" ? 1 : 0);
+      document.querySelector(`[data-chart-max="${name}"]`).textContent = Math.max(...values).toFixed(name === "temperature" ? 1 : 0);
+    }
+
+    function renderTelemetry(telemetry) {
+      const temperature = Number(telemetry.temperatureC);
+      const humidity = Number(telemetry.humidityPct);
+      if (!Number.isFinite(temperature) || !Number.isFinite(humidity) || !Array.isArray(telemetry.history) ||
+          telemetry.history.length === 0 || !telemetry.history.every((point) =>
+            Number.isFinite(Number(point.temperatureC)) && Number.isFinite(Number(point.humidityPct)))) {
+        throw new Error("Telemetry data is missing valid temperature, humidity, or history values.");
+      }
+
+      document.querySelectorAll('[data-reading="temperature"]').forEach((element) => {
+        element.textContent = temperature.toFixed(1);
+      });
+      document.querySelectorAll('[data-reading="humidity"]').forEach((element) => {
+        element.textContent = humidity.toFixed(0);
+      });
+      const recordedAt = new Intl.DateTimeFormat("th-TH", { dateStyle: "medium", timeStyle: "medium" }).format(new Date(telemetry.recordedAt));
+      document.querySelectorAll("[data-reading-time]").forEach((element) => {
+        element.textContent = `ณ ${recordedAt}`;
+      });
+      renderChartMetric("temperature", telemetry.history.map((point) => Number(point.temperatureC)), 29, 32);
+      renderChartMetric("humidity", telemetry.history.map((point) => Number(point.humidityPct)), 60, 75);
+    }
+
+    const equipment = {
+      fan: {
+        title: "สถานะพัดลม",
+        subtitle: "รายละเอียดอุปกรณ์และข้อมูลการทำงาน · FAN-01 · โรงเรียน D1 / โซน A",
+        kind: "พัดลมระบายอากาศ · FAN-01",
+        icon: "♧",
+        state: "กำลังทำงาน",
+        since: "ทำงานต่อเนื่อง 14 นาที 5 วินาที",
+        lastAction: "14:18:00 น. · เริ่มทำงาน",
+        today: "จากทั้งหมด 2 ชม. 34 นาที",
+        rows: [
+          ["14:32:05", "รับข้อมูลสถานะล่าสุด", "กำลังทำงาน", "เชื่อมต่อแล้ว"],
+          ["14:18:00", "สถานะเปลี่ยนเป็นทำงาน", "กำลังทำงาน", "เชื่อมต่อแล้ว"],
+          ["14:05:00", "สถานะเปลี่ยนเป็นหยุด", "หยุดทำงาน", "เชื่อมต่อแล้ว"],
+          ["13:40:00", "สถานะเปลี่ยนเป็นทำงาน", "กำลังทำงาน", "เชื่อมต่อแล้ว"]
+        ]
+      },
+      sprinkler: {
+        title: "สถานะสปริงเกอร์",
+        subtitle: "รายละเอียดอุปกรณ์และการตั้งค่า · SPR-01 · โรงเรียน D1 / โซน A",
+        kind: "สปริงเกอร์ · SPR-01",
+        icon: "◉",
+        state: "หยุดทำงาน",
+        since: "หยุดทำงานต่อเนื่อง 7 นาที 5 วินาที",
+        lastAction: "14:25:00 น. · หยุดทำงาน",
+        today: "ทำงานทั้งหมด 4 รอบ / รวม 20 นาที",
+        rows: [
+          ["14:32:05", "รับข้อมูลสถานะล่าสุด", "หยุดทำงาน", "เชื่อมต่อแล้ว"],
+          ["14:25:00", "สิ้นสุดรอบการทำงาน", "หยุดทำงาน", "เชื่อมต่อแล้ว"],
+          ["14:20:00", "เริ่มรอบการทำงาน", "กำลังทำงาน", "เชื่อมต่อแล้ว"],
+          ["13:25:00", "สิ้นสุดรอบการทำงาน", "หยุดทำงาน", "เชื่อมต่อแล้ว"]
+        ]
+      }
+    };
+
+    const dashboard = document.querySelector("#dashboard-page");
+    const detail = document.querySelector("#detail-page");
+    const toast = document.querySelector("#toast");
+    let toastTimer;
+
+    function showPage(page) {
+      const isDashboard = page === "dashboard";
+      dashboard.classList.toggle("hidden", !isDashboard);
+      detail.classList.toggle("hidden", isDashboard);
+      document.querySelectorAll(".nav-button").forEach((button) => {
+        button.classList.toggle("active", button.dataset.page === page);
+        if (button.dataset.page === page) button.setAttribute("aria-current", "page");
+        else button.removeAttribute("aria-current");
+      });
+      if (!isDashboard) {
+        const data = equipment[page];
+        document.querySelector("#detail-title").textContent = data.title;
+        document.querySelector("#detail-subtitle").textContent = data.subtitle;
+        document.querySelector("#device-kind").textContent = data.kind;
+        document.querySelector("#device-avatar").textContent = data.icon;
+        document.querySelector("#device-state").textContent = data.state;
+        document.querySelector("#device-since").textContent = data.since;
+        document.querySelector("#last-action").textContent = data.lastAction;
+        document.querySelector("#today-summary").textContent = data.today;
+        document.querySelector("#activity-rows").innerHTML = data.rows.map((row) =>
+          `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td class="state-cell">${row[3]}</td></tr>`
+        ).join("");
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function notify(message) {
+      toast.textContent = message;
+      toast.classList.remove("hidden");
+      window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(() => toast.classList.add("hidden"), 2600);
+    }
+
+    document.addEventListener("click", (event) => {
+      const pageButton = event.target.closest("[data-page]");
+      if (pageButton) showPage(pageButton.dataset.page);
+    });
+
+    document.querySelector("#refresh-button").addEventListener("click", () => notify("กำลังแสดงข้อมูลตัวอย่าง รอเชื่อมต่อ ThingsBoard"));
+    document.querySelector("#detail-refresh").addEventListener("click", () => notify("สถานะนี้เป็นข้อมูลตัวอย่าง รอเชื่อมต่อ ThingsBoard"));
+    document.querySelector("#account-button").addEventListener("click", () => notify("เข้าสู่ระบบในฐานะผู้ดูแลระบบ"));
+    document.querySelector("#range-select").addEventListener("change", (event) => {
+      const labels = { "6": "1 ชั่วโมง", "12": "6 ชั่วโมง", "24": "24 ชั่วโมง" };
+      document.querySelector(".chart-description").textContent =
+        `ย้อนหลัง ${labels[event.target.value]} · 13:32–14:32 น. · อัปเดตทุก 5 นาที`;
+    });
+
+    readTelemetry().then(renderTelemetry).catch((error) => {
+      console.error("Unable to render telemetry:", error);
+      notify("ไม่สามารถแสดงข้อมูลเซนเซอร์ได้");
+    });
+  </script>
+</body>
+</html>
