@@ -209,7 +209,7 @@
       color: #fff;
       background: #303030;
       box-shadow: 0 3px 14px #0003;
-      font-size: 11px;
+      font-size: 14px;
     }
 
     @media (max-width: 720px) {
@@ -293,7 +293,7 @@
             </div>
             <div class="updated">
               <button class="button small" id="refresh-button" type="button">↻ &nbsp;อัปเดตข้อมูลล่าสุด</button>
-              <div id="updated-time">ข้อมูลตัวอย่าง · รอเชื่อมต่อ ThingsBoard</div>
+              <div id="updated-time">กำลังรอข้อมูลจาก Wokwi...</div>
             </div>
           </div>
 
@@ -303,16 +303,16 @@
                 <div class="metric-label"><span>♨</span> อุณหภูมิ</div>
                 <span class="sensor-tag">เซนเซอร์ TH-01</span>
               </div>
-              <div class="metric-value"><span data-reading="temperature">30.8</span><small>°C</small></div>
-              <div class="metric-foot"><span>ค่าเฉลี่ย 6 ชม. 1 วันที่ผ่านมา</span><span>ข้อมูลทุก 5 นาที (ล่าสุด)</span></div>
+              <div class="metric-value"><span data-reading="temperature">--</span><small>°C</small></div>
+              <div class="metric-foot"><span>ค่าล่าสุด</span><span>อัปเดตเรียลไทม์</span></div>
             </article>
             <article class="card metric-card">
               <div class="metric-top">
                 <div class="metric-label"><span>◉</span> ความชื้นสัมพัทธ์</div>
                 <span class="sensor-tag">เซนเซอร์ TH-01</span>
               </div>
-              <div class="metric-value"><span data-reading="humidity">68</span><small>%RH</small></div>
-              <div class="metric-foot"><span>ค่าเฉลี่ย 6 ชม. 1 วันที่ผ่านมา</span><span>ข้อมูลทุก 5 นาที (ล่าสุด)</span></div>
+              <div class="metric-value"><span data-reading="humidity">--</span><small>%RH</small></div>
+              <div class="metric-foot"><span>ค่าล่าสุด</span><span>อัปเดตเรียลไทม์</span></div>
             </article>
           </div>
 
@@ -320,7 +320,7 @@
             <div class="chart-header">
               <div>
                 <h2>แนวโน้มเซนเซอร์</h2>
-                <div class="chart-description">ย้อนหลัง 6 ชั่วโมง · 13:32–14:32 น. · อัปเดตทุก 5 นาที</div>
+                <div class="chart-description">ประวัติข้อมูล 15 รายการล่าสุด · อัปเดตอัตโนมัติ</div>
               </div>
               <select class="button small" id="range-select" aria-label="ช่วงเวลา">
                 <option value="6">1 ชั่วโมงล่าสุด</option>
@@ -330,23 +330,23 @@
             </div>
             <div class="chart-grid">
               <div class="chart">
-                <div class="chart-title"><strong>อุณหภูมิ (°C)</strong><span>ล่าสุด <span data-chart-latest="temperature">30.8</span>°C · สูงสุด <span data-chart-max="temperature">31.2</span>°</span></div>
+                <div class="chart-title"><strong>อุณหภูมิ (°C)</strong><span>ล่าสุด <span data-chart-latest="temperature">--</span>°C · สูงสุด <span data-chart-max="temperature">--</span>°</span></div>
                 <svg viewBox="0 0 440 150" role="img" aria-label="กราฟอุณหภูมิ">
                   <line class="gridline" x1="38" y1="24" x2="432" y2="24"/><line class="gridline" x1="38" y1="55" x2="432" y2="55"/><line class="gridline" x1="38" y1="86" x2="432" y2="86"/><line class="gridline" x1="38" y1="117" x2="432" y2="117"/>
-                  <text x="5" y="27">32</text><text x="5" y="58">31</text><text x="5" y="89">30</text><text x="5" y="120">29</text>
-                  <polyline class="series" data-chart="temperature" points="38,84 65,91 92,103 119,88 146,76 173,82 200,65 227,58 254,68 281,51 308,63 335,49 362,57 389,66 416,61"/>
+                  <text x="5" y="27">40</text><text x="5" y="58">30</text><text x="5" y="89">20</text><text x="5" y="120">10</text>
+                  <polyline class="series" data-chart="temperature" points=""/>
                   <circle class="dot" data-chart-dot="temperature" cx="416" cy="61" r="3"/>
-                  <text x="38" y="143">13:32</text><text x="126" y="143">13:47</text><text x="215" y="143">14:02</text><text x="305" y="143">14:17</text><text x="390" y="143">14:32</text>
+                  <text x="38" y="143">อดีต</text><text x="380" y="143">ปัจจุบัน</text>
                 </svg>
               </div>
               <div class="chart">
-                <div class="chart-title"><strong>ความชื้น (%RH)</strong><span>ล่าสุด <span data-chart-latest="humidity">68</span> · สูงสุด <span data-chart-max="humidity">72</span></span></div>
+                <div class="chart-title"><strong>ความชื้น (%RH)</strong><span>ล่าสุด <span data-chart-latest="humidity">--</span> · สูงสุด <span data-chart-max="humidity">--</span></span></div>
                 <svg viewBox="0 0 440 150" role="img" aria-label="กราฟความชื้น">
                   <line class="gridline" x1="38" y1="24" x2="432" y2="24"/><line class="gridline" x1="38" y1="55" x2="432" y2="55"/><line class="gridline" x1="38" y1="86" x2="432" y2="86"/><line class="gridline" x1="38" y1="117" x2="432" y2="117"/>
-                  <text x="5" y="27">75</text><text x="5" y="58">70</text><text x="5" y="89">65</text><text x="5" y="120">60</text>
-                  <polyline class="series" data-chart="humidity" points="38,55 65,47 92,41 119,49 146,58 173,53 200,64 227,72 254,78 281,71 308,84 335,75 362,68 389,61 416,61"/>
+                  <text x="5" y="27">100</text><text x="5" y="58">75</text><text x="5" y="89">50</text><text x="5" y="120">25</text>
+                  <polyline class="series" data-chart="humidity" points=""/>
                   <circle class="dot" data-chart-dot="humidity" cx="416" cy="61" r="3"/>
-                  <text x="38" y="143">13:32</text><text x="126" y="143">13:47</text><text x="215" y="143">14:02</text><text x="305" y="143">14:17</text><text x="390" y="143">14:32</text>
+                  <text x="38" y="143">อดีต</text><text x="380" y="143">ปัจจุบัน</text>
                 </svg>
               </div>
             </div>
@@ -359,7 +359,7 @@
                 <div class="device-title"><span>♧</span> พัดลม <span class="sensor-tag">FAN-01</span></div>
                 <span class="status">กำลังทำงาน</span>
               </div>
-              <div class="device-description">เริ่มทำงานอัตโนมัติ · รับข้อมูลล่าสุด 14:32:05 น.<br>ตั้งค่าความเร็ว: ระดับ 4 จาก 5 ระดับ</div>
+              <div class="device-description">เริ่มทำงานอัตโนมัติ<br>ตั้งค่าความเร็ว: ระดับ 4 จาก 5 ระดับ</div>
               <button class="device-link" data-page="fan">ดูสถานะพัดลม <span>→</span></button>
             </article>
             <article class="card device-card">
@@ -367,11 +367,11 @@
                 <div class="device-title"><span>◉</span> สปริงเกอร์ <span class="sensor-tag">SPR-01</span></div>
                 <span class="status">หยุดทำงาน</span>
               </div>
-              <div class="device-description">เปิดอัตโนมัติ (ตั้งเวลา) · รับข้อมูลล่าสุด 14:32:05 น.<br>รอบการทำงาน: ทุก 2 ชั่วโมง · ทำงาน 20 นาที</div>
+              <div class="device-description">เปิดอัตโนมัติ (ตั้งเวลา)<br>รอบการทำงาน: ทุก 2 ชั่วโมง · ทำงาน 20 นาที</div>
               <button class="device-link" data-page="sprinkler">ดูสถานะสปริงเกอร์ <span>→</span></button>
             </article>
           </div>
-          <div class="footer-note">ⓘ &nbsp;ขณะนี้แสดงข้อมูลตัวอย่าง · เมื่อเชื่อมต่อ ThingsBoard ควรดึงข้อมูลผ่าน API ฝั่งเซิร์ฟเวอร์เพื่อปกป้อง Access Token</div>
+          <div class="footer-note">ⓘ &nbsp;เชื่อมต่อ ThingsBoard Cloud เพื่อดึงข้อมูลเซนเซอร์แบบเรียลไทม์</div>
         </section>
 
         <section id="detail-page" class="hidden">
@@ -383,7 +383,7 @@
             </div>
             <div class="updated">
               <button class="button small" type="button" id="detail-refresh">↻ &nbsp;อัปเดตข้อมูลล่าสุด</button>
-              <div>ข้อมูลตัวอย่าง · รอเชื่อมต่อ ThingsBoard</div>
+              <div>ข้อมูลเรียลไทม์</div>
             </div>
           </div>
 
@@ -399,7 +399,7 @@
               <div>
                 <div class="summary-label">สถานะการเชื่อมต่อ</div>
                 <div class="summary-status"><span class="status">เชื่อมต่อแล้ว (สัญญาณดี)</span></div>
-                <div class="subtitle">รับข้อมูลล่าสุด 14:32:05 น. · ทุก 5 นาที</div>
+                <div class="subtitle">รับข้อมูลล่าสุดจาก ThingsBoard</div>
               </div>
             </div>
             <div class="detail-meta">
@@ -413,22 +413,22 @@
           <div class="metrics detail-metrics">
             <article class="card metric-card">
               <div class="metric-top"><div class="metric-label">♨ &nbsp;อุณหภูมิ</div><span class="sensor-tag">เซนเซอร์ TH-01</span></div>
-              <div class="metric-foot"><span class="metric-value"><span data-reading="temperature">30.8</span><small>°C</small></span><span data-reading-time>ข้อมูลตัวอย่าง</span></div>
+              <div class="metric-foot"><span class="metric-value"><span data-reading="temperature">--</span><small>°C</small></span><span data-reading-time>กำลังโหลด</span></div>
             </article>
             <article class="card metric-card">
               <div class="metric-top"><div class="metric-label">◉ &nbsp;ความชื้นสัมพัทธ์</div><span class="sensor-tag">เซนเซอร์ TH-01</span></div>
-              <div class="metric-foot"><span class="metric-value"><span data-reading="humidity">68</span><small>%RH</small></span><span data-reading-time>ข้อมูลตัวอย่าง</span></div>
+              <div class="metric-foot"><span class="metric-value"><span data-reading="humidity">--</span><small>%RH</small></span><span data-reading-time>กำลังโหลด</span></div>
             </article>
           </div>
 
           <section class="card activity-card">
-            <div class="activity-header"><h2>กิจกรรมล่าสุด</h2><span>11 ต.ค. 2569 · 4 รายการล่าสุด</span></div>
+            <div class="activity-header"><h2>กิจกรรมล่าสุด</h2><span>รายการล่าสุด</span></div>
             <table>
               <thead><tr><th>เวลา</th><th>เหตุการณ์</th><th>สถานะอุปกรณ์</th><th>การเชื่อมต่อ (ล่าสุด)</th></tr></thead>
               <tbody id="activity-rows"></tbody>
             </table>
           </section>
-          <div class="footer-note">ⓘ &nbsp;ขณะนี้แสดงข้อมูลตัวอย่าง · เมื่อเชื่อมต่อ ThingsBoard ควรดึงข้อมูลผ่าน API ฝั่งเซิร์ฟเวอร์เพื่อปกป้อง Access Token</div>
+          <div class="footer-note">ⓘ &nbsp;เชื่อมต่อ ThingsBoard Cloud เพื่อดึงข้อมูลเซนเซอร์แบบเรียลไทม์</div>
         </section>
       </main>
     </div>
@@ -436,73 +436,76 @@
   <div class="toast hidden" id="toast" role="status" aria-live="polite"></div>
 
   <script>
-    const demoTelemetry = {
-      temperatureC: 30.8,
-      humidityPct: 68,
-      recordedAt: "2026-10-11T14:32:05+07:00",
-      history: [
-        { temperatureC: 30.1, humidityPct: 70 },
-        { temperatureC: 29.9, humidityPct: 71 },
-        { temperatureC: 29.6, humidityPct: 72 },
-        { temperatureC: 30.0, humidityPct: 71 },
-        { temperatureC: 30.3, humidityPct: 69 },
-        { temperatureC: 30.1, humidityPct: 70 },
-        { temperatureC: 30.6, humidityPct: 68 },
-        { temperatureC: 30.8, humidityPct: 67 },
-        { temperatureC: 30.5, humidityPct: 66 },
-        { temperatureC: 31.0, humidityPct: 67 },
-        { temperatureC: 30.6, humidityPct: 65 },
-        { temperatureC: 31.1, humidityPct: 66 },
-        { temperatureC: 30.8, humidityPct: 67 },
-        { temperatureC: 30.5, humidityPct: 68 },
-        { temperatureC: 30.8, humidityPct: 68 }
-      ]
-    };
+    const ACCESS_TOKEN = "hV24gm6aGOuyfOi1yPaM";
+    const ENDPOINT = `https://thingsboard.cloud/api/v1/${ACCESS_TOKEN}/attributes?clientKeys=temperature,humidity`;
 
-    // Replace this sample provider with the application's server API when ThingsBoard is connected.
-    async function readTelemetry() {
-      return demoTelemetry;
-    }
+    const history = [];
+    let lastTemp = null;
+    let lastHum = null;
 
     function renderChartMetric(name, values, min, max) {
+      if (!values || values.length === 0) return;
       const points = values.map((value, index) => {
         const x = 38 + (378 * index) / Math.max(values.length - 1, 1);
         const y = 117 - ((value - min) / (max - min)) * 93;
         return `${x.toFixed(1)},${y.toFixed(1)}`;
       });
-      document.querySelector(`[data-chart="${name}"]`).setAttribute("points", points.join(" "));
+      const poly = document.querySelector(`[data-chart="${name}"]`);
+      if (poly) poly.setAttribute("points", points.join(" "));
 
       const lastIndex = Math.max(values.length - 1, 0);
       const lastX = 38 + (378 * lastIndex) / Math.max(values.length - 1, 1);
       const lastY = 117 - ((values[lastIndex] - min) / (max - min)) * 93;
       const dot = document.querySelector(`[data-chart-dot="${name}"]`);
-      dot.setAttribute("cx", lastX.toFixed(1));
-      dot.setAttribute("cy", lastY.toFixed(1));
-      document.querySelector(`[data-chart-latest="${name}"]`).textContent = values[lastIndex].toFixed(name === "temperature" ? 1 : 0);
-      document.querySelector(`[data-chart-max="${name}"]`).textContent = Math.max(...values).toFixed(name === "temperature" ? 1 : 0);
+      if (dot) {
+        dot.setAttribute("cx", lastX.toFixed(1));
+        dot.setAttribute("cy", lastY.toFixed(1));
+      }
+      const latestEl = document.querySelector(`[data-chart-latest="${name}"]`);
+      if (latestEl) latestEl.textContent = values[lastIndex].toFixed(name === "temperature" ? 1 : 0);
+      const maxEl = document.querySelector(`[data-chart-max="${name}"]`);
+      if (maxEl) maxEl.textContent = Math.max(...values).toFixed(name === "temperature" ? 1 : 0);
     }
 
-    function renderTelemetry(telemetry) {
-      const temperature = Number(telemetry.temperatureC);
-      const humidity = Number(telemetry.humidityPct);
-      if (!Number.isFinite(temperature) || !Number.isFinite(humidity) || !Array.isArray(telemetry.history) ||
-          telemetry.history.length === 0 || !telemetry.history.every((point) =>
-            Number.isFinite(Number(point.temperatureC)) && Number.isFinite(Number(point.humidityPct)))) {
-        throw new Error("Telemetry data is missing valid temperature, humidity, or history values.");
-      }
+    async function pollData() {
+      try {
+        const res = await fetch(ENDPOINT);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
 
-      document.querySelectorAll('[data-reading="temperature"]').forEach((element) => {
-        element.textContent = temperature.toFixed(1);
-      });
-      document.querySelectorAll('[data-reading="humidity"]').forEach((element) => {
-        element.textContent = humidity.toFixed(0);
-      });
-      const recordedAt = new Intl.DateTimeFormat("th-TH", { dateStyle: "medium", timeStyle: "medium" }).format(new Date(telemetry.recordedAt));
-      document.querySelectorAll("[data-reading-time]").forEach((element) => {
-        element.textContent = `ณ ${recordedAt}`;
-      });
-      renderChartMetric("temperature", telemetry.history.map((point) => Number(point.temperatureC)), 29, 32);
-      renderChartMetric("humidity", telemetry.history.map((point) => Number(point.humidityPct)), 60, 75);
+        if (data && data.client && data.client.temperature !== undefined && data.client.humidity !== undefined) {
+          const temp = parseFloat(data.client.temperature);
+          const hum = parseFloat(data.client.humidity);
+
+          document.querySelectorAll('[data-reading="temperature"]').forEach((el) => {
+            el.textContent = temp.toFixed(1);
+          });
+          document.querySelectorAll('[data-reading="humidity"]').forEach((el) => {
+            el.textContent = hum.toFixed(0);
+          });
+
+          const now = new Date().toLocaleTimeString("th-TH");
+          document.querySelectorAll("[data-reading-time]").forEach((el) => {
+            el.textContent = `ณ ${now}`;
+          });
+          document.querySelector("#updated-time").textContent = `รับข้อมูลล่าสุด: ${now}`;
+
+          if (history.length === 0 || lastTemp !== temp || lastHum !== hum) {
+            history.push({ temperatureC: temp, humidityPct: hum });
+            if (history.length > 15) history.shift();
+            lastTemp = temp;
+            lastHum = hum;
+
+            renderChartMetric("temperature", history.map(p => p.temperatureC), 10, 45);
+            renderChartMetric("humidity", history.map(p => p.humidityPct), 20, 100);
+          }
+        } else {
+          document.querySelector("#updated-time").textContent = "เชื่อมต่อ ThingsBoard แล้ว · รอข้อมูลจาก Wokwi...";
+        }
+      } catch (err) {
+        console.error("Polling error:", err);
+        document.querySelector("#updated-time").textContent = "กำลังรอข้อมูลจาก ThingsBoard...";
+      }
     }
 
     const equipment = {
@@ -575,7 +578,7 @@
       toast.textContent = message;
       toast.classList.remove("hidden");
       window.clearTimeout(toastTimer);
-      toastTimer = window.setTimeout(() => toast.classList.add("hidden"), 2600);
+      toastTimer = window.setTimeout(() => toast.classList.add("hidden"), 3000);
     }
 
     document.addEventListener("click", (event) => {
@@ -583,19 +586,22 @@
       if (pageButton) showPage(pageButton.dataset.page);
     });
 
-    document.querySelector("#refresh-button").addEventListener("click", () => notify("กำลังแสดงข้อมูลตัวอย่าง รอเชื่อมต่อ ThingsBoard"));
-    document.querySelector("#detail-refresh").addEventListener("click", () => notify("สถานะนี้เป็นข้อมูลตัวอย่าง รอเชื่อมต่อ ThingsBoard"));
-    document.querySelector("#account-button").addEventListener("click", () => notify("เข้าสู่ระบบในฐานะผู้ดูแลระบบ"));
-    document.querySelector("#range-select").addEventListener("change", (event) => {
-      const labels = { "6": "1 ชั่วโมง", "12": "6 ชั่วโมง", "24": "24 ชั่วโมง" };
-      document.querySelector(".chart-description").textContent =
-        `ย้อนหลัง ${labels[event.target.value]} · 13:32–14:32 น. · อัปเดตทุก 5 นาที`;
+    document.querySelector("#refresh-button").addEventListener("click", () => {
+      notify("กำลังดึงข้อมูลล่าสุดจาก ThingsBoard...");
+      pollData();
+    });
+    document.querySelector("#detail-refresh").addEventListener("click", () => {
+      notify("กำลังดึงข้อมูลล่าสุดจาก ThingsBoard...");
+      pollData();
     });
 
-    readTelemetry().then(renderTelemetry).catch((error) => {
-      console.error("Unable to render telemetry:", error);
-      notify("ไม่สามารถแสดงข้อมูลเซนเซอร์ได้");
-    });
+    document.querySelector("#account-button").addEventListener("click", () => notify("เข้าสู่ระบบในฐานะผู้ดูแลระบบ"));
+
+    // เริ่มดึงข้อมูลทันทีเมื่อเปิดหน้าเว็บ
+    pollData();
+
+    // ดึงข้อมูลซ้ำอัตโนมัติทุกๆ 3 วินาที
+    setInterval(pollData, 3000);
   </script>
 </body>
 </html>
